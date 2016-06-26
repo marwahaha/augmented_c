@@ -5,13 +5,26 @@
 #include "log.h"
 #include "args.h"
 
+/**
+ * Structural representation of arguments.
+ */
 struct args {
+  // optional, can be equal to NULL
   char*  wfile;
+
+  // is the length of `rfiles'
   char** rfiles;
+
+  // the number of files in pointer `rfiles'
   uint32_t rfilec;
 };
 
 
+/**
+ * Takes the arguments passed to `int main(int argc, char **args)',
+ * and returns an `struct args` pointer, if NULL arguments failed
+ * to parse
+ */
 struct args *parse_args(int argc, char **args) {
   ldebug("Parsing arguments");
   uint32_t rf_alloc = 1;
@@ -19,7 +32,18 @@ struct args *parse_args(int argc, char **args) {
   char **rfiles = malloc(sizeof(char *) * rf_alloc);
   char  *wfile  = NULL;
 
-  // TODO better failure behaviour
+  /**
+   * Because it's a heckin pain to write this out by hand
+   * also C has no standardised higher level functions :(
+   */
+  #define free_memory(...) \
+    { \
+      if (wfile != NULL) free(wfile); \
+      for (int i = 0; i < rf_count; i++) \
+        free(rfiles[i]); \
+      free(rfiles); \
+    }
+
   for (int i = 1; i < argc; i++) {
     if (args[i][0] == '-') switch (args[i][1]) {
       case '-': {
@@ -49,7 +73,6 @@ struct args *parse_args(int argc, char **args) {
           rfiles = new_rfiles;
 
           ldebug("      rf_alloc => %u", rf_alloc);
-
         }
 
         ldebug("    len(rfiles) when past => %u", rf_count);
@@ -69,7 +92,7 @@ struct args *parse_args(int argc, char **args) {
         ldebug("  Paring `-f'");
         if (1 + i < argc) {
           lerror("Expecting argument for read file.");
-          free(rfiles);
+          free_memory();
           return NULL;
         }
         else if (rf_count + 1 > rf_alloc) {
@@ -89,7 +112,7 @@ struct args *parse_args(int argc, char **args) {
         ldebug("  Paring `-o'");
         if (i + 1 < argc) {
           lerror("Expected argument for write file.");
-          free(rfiles);
+          free_memory();
           return NULL;
         }
         else if (wfile == NULL) {
@@ -97,14 +120,13 @@ struct args *parse_args(int argc, char **args) {
         }
         else {
           lerror("Can only specify 1 write file.");
-          free(rfiles);
+          free_memory();
           return NULL;
         }
       } break;
       default: {
-        ldebug("  Unknown flag");
-        lerror("Unknown flag.");
-        free(rfiles);
+        lerror("  Unknown flag.");
+        free_memory();
         return NULL;
       }
     }
@@ -138,6 +160,9 @@ struct args *parse_args(int argc, char **args) {
 }
 
 void free_args(struct args *args) {
+  if (args->wfile) {
+    free(args->wfile);
+  }
   free(args->rfiles);
   free(args);
 }
