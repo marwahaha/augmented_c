@@ -5,9 +5,6 @@
 #include "log.h"
 #include "args.h"
 
-/**
- * Structural representation of arguments.
- */
 struct args {
   // optional, can be equal to NULL
   char*  wfile;
@@ -19,12 +16,6 @@ struct args {
   uint32_t rfilec;
 };
 
-
-/**
- * Takes the arguments passed to `int main(int argc, char **args)',
- * and returns an `struct args` pointer, if NULL arguments failed
- * to parse
- */
 struct args *parse_args(int argc, char **args) {
   ldebug("Parsing arguments");
   uint32_t rf_alloc = 1;
@@ -178,5 +169,17 @@ void fprintargs(FILE *writef, struct args *args) {
   for (uint32_t i = 0; i < args->rfilec; i++) {
     fprintf(writef, "    - %s\n", args->rfiles[i]);
   }
+}
+
+char *arg_wfiles(struct args *args) {
+  return args->wfile;
+}
+
+char **arg_rfiles(struct args *args) {
+  return args->rfiles;
+}
+
+uint32_t arg_rfilec(struct args *args) {
+  return args->rfilec;
 }
 
