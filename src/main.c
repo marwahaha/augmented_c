@@ -1,9 +1,9 @@
 #include <stdlib.h>
-#include <stdint.h>
 #include <stdio.h>
 
-#include "log.h"
+
 #include "args.h"
+#include "log.h"
 
 
 int main(int argc, char **args) {
