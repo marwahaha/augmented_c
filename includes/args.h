@@ -30,17 +30,12 @@ void fprintargs(FILE *, struct args *);
 /**
  * Gets the write file
  */
-char *arg_wfile(struct args *);
+const char *arg__main_path(struct args *);
 
 /**
- * Gets the read files
+ * Gets the output file
  */
-char **arg_rfiles(struct args *);
-
-/**
- * Gets the number of read files
- */
-uint32_t arg_rfilec(struct args *);
+const char *arg__out_dir(struct args *);
 
 #endif
 

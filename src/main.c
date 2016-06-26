@@ -9,7 +9,7 @@
 int main(int argc, char **args) {
   struct args *arguments;
   if ((arguments = parse_args(argc, args)) == NULL) {
-    fprintf(stderr, "[ERROR]: failed to parse args\n");
+    lerror("Failed to parse args.");
     return 1;
   }
   else {

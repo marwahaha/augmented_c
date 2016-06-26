@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define __logfactory__(TYPE, FORMAT) \
-  fprintf(stderr, "[" TYPE ":(%s:%u)]: ", __FILE__, __LINE__); \
+  fprintf(stderr, "[" TYPE " @ (%s:%u)]: ", __FILE__, __LINE__); \
   fprintf(stderr, FORMAT); \
   fprintf(stderr, "\n");
 
