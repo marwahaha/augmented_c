@@ -3,7 +3,7 @@
 > Not really c
 
 Ulitmately this will probably be a project that will be
-abondoned sooner or later, but this project that came about
+abandoned sooner or later, but this project that came about
 as I dislike C's lack of typesafety and abstraction but I
 appreshiate it's low level ness, so I made something somewhere
 between...
